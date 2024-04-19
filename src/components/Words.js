@@ -1,3 +1,3 @@
 export const boardDefault = Array(6)
   .fill()
-  .map(() => Array(5).fill(''));
+  .map(() => Array(5).fill('Mi'));

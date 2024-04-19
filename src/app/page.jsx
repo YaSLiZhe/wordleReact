@@ -1,7 +1,15 @@
+'use client';
+
 import Board from '@/components/Board';
 import Keyboard from '@/components/Keyboard';
+import { boardDefault } from '@/components/Words';
+import { createContext, useState } from 'react';
+
+export const AppContext = createContext();
 
 export default function Page() {
+  const [board, setBoard] = useState(boardDefault);
+  const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
   return (
     <div className="flex flex-col items-center justify-between min-h-screen">
       <nav className="text-center">
@@ -9,8 +17,12 @@ export default function Page() {
           Wordle Game
         </h1>
       </nav>
-      <Board />
-      <Keyboard />
+      <AppContext.Provider
+        value={{ board, setBoard, currAttempt, setCurrAttempt }}
+      >
+        <Board />
+        <Keyboard />
+      </AppContext.Provider>
     </div>
   );
 }
