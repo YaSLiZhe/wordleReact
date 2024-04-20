@@ -10,6 +10,7 @@ export const AppContext = createContext();
 export default function Page() {
   const [board, setBoard] = useState(boardDefault);
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
+  const rightWord = 'RIGHT';
 
   const onSelector = (keyVal) => {
     if (currAttempt.letterPos > 4) return;
@@ -46,6 +47,7 @@ export default function Page() {
           onSelector,
           onDelete,
           onEnter,
+          rightWord,
         }}
       >
         <Board />
