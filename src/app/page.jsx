@@ -2,8 +2,11 @@
 
 import Board from '@/components/Board';
 import Keyboard from '@/components/Keyboard';
+import GameOver from '@/components/GameOver';
+import Rules from '@/components/Rules';
 import { boardDefault, generateWordSet } from '@/components/Words';
 import { createContext, useEffect, useState } from 'react';
+import { MdTipsAndUpdates } from 'react-icons/md';
 
 export const AppContext = createContext();
 
@@ -12,10 +15,18 @@ export default function Page() {
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
   const [wordSet, setWordSet] = useState(new Set());
   const [disabledLetters, setDisabledLetters] = useState([]);
+  const [gameOver, setGameOver] = useState({
+    gameOver: false,
+    guessWord: false,
+  });
+  const [rightWord, setRightWord] = useState('');
+  const [showRules, setShowRules] = useState(false);
 
-  const rightWord = 'RIGHT';
   useEffect(() => {
-    generateWordSet().then((res) => setWordSet(res.wordSet));
+    generateWordSet().then((res) => {
+      setWordSet(res.wordSet);
+      setRightWord(res.todayWord.toUpperCase());
+    });
   }, []);
 
   const onSelector = (keyVal) => {
@@ -46,15 +57,30 @@ export default function Page() {
       alert('Word not found!');
     }
     if (curWord === rightWord) {
-      alert('Game over! you Win');
+      setGameOver({ gameOver: true, guessWord: true });
+      return;
+    }
+    if (currAttempt.attempt === 5) {
+      setGameOver({ gameOver: true, guessWord: false });
+      return;
     }
   };
+  const toggleRules = () => {
+    setShowRules((prev) => !prev);
+  };
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen">
-      <nav className="text-center">
+    <div className="flex flex-col items-center justify-center justify-between min-h-screen">
+      <nav className="flex justify-between items-center w-full p-4">
         <h1 className="text-3xl font-bold underline decoration-4 underline-offset-8">
           Wordle Game
         </h1>
+        <button
+          onClick={toggleRules}
+          className="text-xl p-2 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          aria-label="Rules"
+        >
+          <MdTipsAndUpdates className="text-2xl" />
+        </button>
       </nav>
       <AppContext.Provider
         value={{
@@ -68,10 +94,14 @@ export default function Page() {
           rightWord,
           disabledLetters,
           setDisabledLetters,
+          gameOver,
+          setGameOver,
+          showRules,
+          toggleRules,
         }}
       >
-        <Board />
-        <Keyboard />
+        {gameOver.gameOver ? <GameOver /> : showRules ? <Rules /> : <Board />}
+        {!showRules && <Keyboard />}
       </AppContext.Provider>
     </div>
   );

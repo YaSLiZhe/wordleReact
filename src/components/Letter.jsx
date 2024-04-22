@@ -6,7 +6,7 @@ function Letter({ letterPos, attemptVal }) {
     useContext(AppContext);
   const letter = board[attemptVal][letterPos];
 
-  const correct = rightWord[letterPos] === letter;
+  const correct = rightWord.toUpperCase()[letterPos] === letter;
   const almost = !correct && letter !== '' && rightWord.includes(letter);
 
   const letterState =

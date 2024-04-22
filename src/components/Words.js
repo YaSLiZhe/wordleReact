@@ -17,8 +17,10 @@ export const generateWordSet = async () => {
 
     // Initialize a Set with the words array; assuming the data structure is { words: [] }
     const wordSet = new Set(data.words);
+    const wordArray = Array.from(wordSet);
+    const todayWord = wordArray[Math.floor(Math.random() * wordArray.length)];
 
-    return { wordSet };
+    return { wordSet, todayWord };
   } catch (error) {
     // Log the error and handle it appropriately
     console.error('Error fetching word set:', error);
