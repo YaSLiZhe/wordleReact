@@ -11,6 +11,7 @@ export default function Page() {
   const [board, setBoard] = useState(boardDefault);
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
   const [wordSet, setWordSet] = useState(new Set());
+  const [disabledLetters, setDisabledLetters] = useState([]);
 
   const rightWord = 'RIGHT';
   useEffect(() => {
@@ -34,7 +35,19 @@ export default function Page() {
   };
   const onEnter = () => {
     if (currAttempt.letterPos !== 5) return;
-    setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+
+    let curWord = '';
+    for (let i = 0; i < 5; i++) {
+      curWord += board[currAttempt.attempt][i];
+    }
+    if (wordSet.has(curWord.toLowerCase())) {
+      setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+    } else {
+      alert('Word not found!');
+    }
+    if (curWord === rightWord) {
+      alert('Game over! you Win');
+    }
   };
   return (
     <div className="flex flex-col items-center justify-between min-h-screen">
@@ -53,6 +66,8 @@ export default function Page() {
           onDelete,
           onEnter,
           rightWord,
+          disabledLetters,
+          setDisabledLetters,
         }}
       >
         <Board />

@@ -4,7 +4,8 @@ import React, { useContext, useEffect, useCallback } from 'react';
 import Key from './Key';
 import { AppContext } from '@/app/page';
 function Keyboard() {
-  const { onEnter, onDelete, onSelector } = useContext(AppContext);
+  const { onEnter, onDelete, onSelector, disabledLetters } =
+    useContext(AppContext);
   const key1 = 'qwertyuiop'.toUpperCase().split('');
   const key2 = 'asdfghjkl'.toUpperCase().split('');
   const key3 = 'zxcvbnm'.toUpperCase().split('');
@@ -45,18 +46,18 @@ function Keyboard() {
       {/* Three line of keyboard */}
       <div className="flex">
         {key1.map((key) => (
-          <Key keyVal={key} />
+          <Key keyVal={key} disabled={disabledLetters.includes(key)} />
         ))}
       </div>
       <div className="flex">
         {key2.map((key) => (
-          <Key keyVal={key} />
+          <Key keyVal={key} disabled={disabledLetters.includes(key)} />
         ))}
       </div>
       <div className="flex">
         <Key keyVal={'ENTER'} />
         {key3.map((key) => (
-          <Key keyVal={key} />
+          <Key keyVal={key} disabled={disabledLetters.includes(key)} />
         ))}
         <Key keyVal={'DELETE'} />
       </div>
