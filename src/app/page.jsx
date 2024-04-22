@@ -2,15 +2,20 @@
 
 import Board from '@/components/Board';
 import Keyboard from '@/components/Keyboard';
-import { boardDefault } from '@/components/Words';
-import { createContext, useState } from 'react';
+import { boardDefault, generateWordSet } from '@/components/Words';
+import { createContext, useEffect, useState } from 'react';
 
 export const AppContext = createContext();
 
 export default function Page() {
   const [board, setBoard] = useState(boardDefault);
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
+  const [wordSet, setWordSet] = useState(new Set());
+
   const rightWord = 'RIGHT';
+  useEffect(() => {
+    generateWordSet().then((res) => setWordSet(res.wordSet));
+  }, []);
 
   const onSelector = (keyVal) => {
     if (currAttempt.letterPos > 4) return;
