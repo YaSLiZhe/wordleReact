@@ -5,7 +5,7 @@ export const boardDefault = Array(6)
 export const generateWordSet = async () => {
   try {
     // Fetch data from your local API endpoint
-    const response = await fetch('http://localhost:3000/api/word');
+    const response = await fetch('api/word');
 
     // Check if the response is successful
     if (!response.ok) {
